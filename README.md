@@ -150,6 +150,26 @@ npm run test:smoke
 node scripts/generate-report.js
 ```
 
+### Execução real de qualidade mobile
+
+Para um run real com aplicativo de teste e evidência documental/visual de nível profissional:
+
+```powershell
+# 1) configure o app real e a plataforma
+$env:PLATFORM = 'android'
+$env:APP_PATH = './apps/demo-finance.apk'
+$env:APP_PACKAGE = 'com.example.financeapp'
+$env:APP_ACTIVITY = '.MainActivity'
+
+# 2) inicie o emulador/dispositivo e o Appium
+# appium --port 4723
+
+# 3) execute a jornada real com relatório profissional
+npm run quality:real
+```
+
+O runner valida se existe um artefato real, se o ambiente Appium está pronto e gera os artefatos em reports/ para evidência de qualidade. Em ambiente sem app real ou sem dispositivo configurado, o processo sai de forma explícita, mostrando exatamente o que falta para a execução profissional.
+
 Para Android, configure o Android Studio, defina ANDROID_HOME e garanta que adb esteja disponível. Para iOS e validação em nuvem, utilize macOS ou um device farm real, porque execução local direta de iOS não é realista em Windows.
 
 ## Estrutura do projeto

@@ -18,6 +18,10 @@
     "test:ios": "node -e \"console.log('iOS execution requires macOS and XCUITest. This project supports the architecture and configuration, not local simulation on Windows.')\"",
     "test:api": "vitest run api/tests/**/*.spec.ts",
     "report": "node scripts/generate-report.js",
+    "quality:real": "node scripts/quality-runner.js",
+    "appium:start": "appium --port 4723",
+    "appium:doctor": "appium doctor",
+    "emulator:start": "powershell -ExecutionPolicy Bypass -File scripts/start-android-emulator.ps1",
     "setup:check": "node scripts/setup-check.js",
     "ci:quality": "npm run lint && npm run typecheck && npm run test:api && npm run test:smoke && npm run test:coverage"
   },
@@ -37,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "@vitest/coverage-v8": "^2.1.9",
+    "appium": "^2.5.3",
     "dotenv": "^16.4.7",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^10.0.0",
