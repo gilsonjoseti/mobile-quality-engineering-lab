@@ -149,6 +149,17 @@ O repositório foi validado no ambiente atual com os seguintes checks:
 - checks de smoke/regressão mobile aprovados
 - avaliação de release gate concluída para thresholds de local, CI, nightly e release
 
+## Pilares de maturidade profissional
+
+Este projeto foi estruturado para reforçar quatro pilares essenciais de um time de Quality Engineering profissional:
+
+- Evidência real: as decisões de qualidade são apoiadas por artefatos, relatórios, validações e evidência de execução em pipeline.
+- Execução prática: a solução demonstra como automatizar fluxos críticos, integrar API e mobile e validar riscos reais de release.
+- Narrativa de negócio: o projeto conecta testes e automação à experiência do usuário, ao valor do produto e ao impacto de falhas em jornadas críticas.
+- Governança de qualidade: gates por ambiente, critérios de qualidade, mecanismos de revisão e política de decisão de release são tratadas como parte do processo, e não como etapa informal.
+
+Esses pilares tornam o repositório mais do que um laboratório de tecnologia: ele passa a funcionar como uma prova de capacidade de operar qualidade em contextos reais de entrega mobile.
+
 ## Posicionamento de portfolio
 
 Este repositório é adequado para demonstrar:
