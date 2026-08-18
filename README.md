@@ -1,18 +1,18 @@
-# Mobile Quality Engineering Lab
+# Laboratório de Quality Engineering Mobile
 
-A senior-level reference implementation for mobile quality engineering, designed to demonstrate how a QA/SDET team can structure automation, risk-based validation, CI evidence, and release confidence for critical mobile journeys.
+Implementação de referência em nível sênior para quality engineering mobile, criada para demonstrar como uma equipe de QA/SDET pode estruturar automação, validação orientada a risco, evidências de CI e confiança de release para jornadas móveis críticas.
 
-> This repository is a portfolio project focused on practical engineering quality work: test architecture, pipeline design, observability, release gating, and automation strategy for Android and iOS.
+> Este repositório é um projeto de portfolio focado em trabalho prático de qualidade de engenharia: arquitetura de testes, desenho de pipeline, observabilidade, release gates e estratégia de automação para Android e iOS.
 
-## Overview
+## Visão geral
 
-This lab models a financial-style mobile workflow with emphasis on authentic user journeys such as authentication, dashboard validation, and high-risk transaction flows. It combines Appium, API testing, BDD, quality gates, device farm strategy, and structured evidence generation in one reusable engineering reference.
+Este laboratório modela um fluxo mobile com estilo financeiro, com ênfase em jornadas reais do usuário, como autenticação, validação de dashboard e fluxos de transação de alto risco. Ele combina Appium, testes de API, BDD, quality gates, estratégia de device farm e geração estruturada de evidências em uma referência reutilizável de engenharia.
 
-## Business Problem
+## Problema de negócio
 
-Critical mobile journeys need resilience across device fragmentation, operating system variability, and evolving release pressures. The project demonstrates how a quality engineering team can reduce uncertainty through risk-based coverage, automation design, and evidence-driven quality decisions.
+Jornadas móveis críticas precisam ser resilientes diante da fragmentação de dispositivos, da variabilidade de sistemas operacionais e da pressão evolutiva de release. O projeto demonstra como uma equipe de quality engineering pode reduzir incertezas por meio de cobertura orientada a risco, desenho de automação e decisões baseadas em evidência.
 
-## Architecture Summary
+## Resumo da arquitetura
 
 ```mermaid
 flowchart LR
@@ -32,82 +32,82 @@ flowchart LR
     QualityGate --> ReleaseDecision
 ```
 
-## Core Capabilities
+## Capacidades principais
 
-- TypeScript-first automation foundation with strict validation
-- Appium 2 + WebdriverIO architecture with Screen Object Pattern
-- API contract and negative testing using axios-based clients
-- Schema validation for payload integrity
-- Retry and failure-policy patterns for resilient service calls
-- JUnit and JSON reporting for CI evidence publication
-- Azure DevOps pipeline support with artifact publication
-- Cloud device farm strategy for Android and iOS matrix execution
+- base de automação em TypeScript com validação rigorosa
+- arquitetura Appium 2 + WebdriverIO com Screen Object Pattern
+- testes de contrato e cenários negativos com clientes baseados em axios
+- validação de schema para integridade de payload
+- padrões de retry e política de falhas para serviços resilientes
+- relatórios em JUnit e JSON para publicação de evidência no CI
+- suporte a pipeline em Azure DevOps com publicação de artefatos
+- estratégia de device farm em nuvem para execução em matriz Android e iOS
 
-## Tech Stack
+## Stack tecnológica
 
 - Node.js LTS + TypeScript
 - Appium 2 + WebdriverIO
-- UiAutomator2 and XCUITest capability strategy
-- Maestro for lightweight smoke flow validation
-- Robot Framework + AppiumLibrary for keyword-driven execution
-- Axios-based API testing and schema validation
-- Vitest for unit and contract-level checks
-- Azure DevOps pipeline structure
-- BrowserStack, Firebase Test Lab, and AWS Device Farm strategy
+- estratégia de capacidades UiAutomator2 e XCUITest
+- Maestro para validação leve de smoke flow
+- Robot Framework + AppiumLibrary para execução keyword-driven
+- testes de API com Axios e validação de schema
+- Vitest para verificações unitárias e de contrato
+- estrutura de pipeline em Azure DevOps
+- estratégia com BrowserStack, Firebase Test Lab e AWS Device Farm
 
-## Test Strategy
+## Estratégia de testes
 
-The project organizes testing around business risk and release confidence. Authentication and transactional flows receive higher priority than low-risk exploratory paths, and the automation suite reflects that prioritization.
+O projeto organiza os testes em torno de risco de negócio e confiança de release. Fluxos de autenticação e transacionais recebem prioridade mais alta do que caminhos exploratórios de baixo risco, e a suíte de automação reflete essa priorização.
 
-## Quality Strategy
+## Estratégia de qualidade
 
-- Smoke checks validate critical path reachability
-- API contract tests cover positive and negative paths
-- Regression checks protect high-risk flows
-- Device farm strategy expands coverage beyond local infrastructure
-- Evidence bundles support release gate decisions
+- smoke checks validam alcance do caminho crítico
+- testes de contrato de API cobrem cenários positivos e negativos
+- regressões protegem fluxos de alto risco
+- estratégia de device farm amplia cobertura além da infraestrutura local
+- bundles de evidência sustentam decisões de quality gate
 
-## Appium Architecture
+## Arquitetura Appium
 
-- Screen Object Pattern for maintainability
-- BaseScreen abstraction with explicit waits and reusable actions
-- Stable selectors and resilient interaction patterns
-- Screenshot capture during failure scenarios
-- Structured logging for CI and debugging workflows
+- Screen Object Pattern para manutenção
+- abstração BaseScreen com waits explícitos e ações reutilizáveis
+- seletores estáveis e padrões resilientes de interação
+- captura de screenshot em cenários de falha
+- logging estruturado para workflows de CI e depuração
 
-## API Testing Architecture
+## Arquitetura de testes de API
 
-- Base API client for consistent HTTP usage
-- Contract tests for GET/POST/PUT/DELETE behaviors
-- Retry logic for transient service failures
-- Schema validation to reduce malformed payload risk
+- cliente base de API para uso consistente de HTTP
+- testes de contrato para comportamentos GET/POST/PUT/DELETE
+- lógica de retry para falhas transitórias
+- validação de schema para reduzir risco de payload malformado
 
-## Device Farm and CI Strategy
+## Estratégia de Device Farm e CI
 
-- Local/CI validation for fast feedback on PRs
-- Nightly cloud runs over a representative device matrix
-- Release validation based on evidence bundle and environment-specific thresholds
+- validação local/CI para feedback rápido em PRs
+- execuções em nuvem nightly sobre matriz representativa de dispositivos
+- validação de release baseada em bundle de evidência e thresholds por ambiente
 
 ## Quality Gates
 
 - Smoke Tests = 100%
 - Critical Tests >= 98%
 - Regression >= 95%
-- No blocker defects
-- No critical defects
+- Sem defects bloqueadores
+- Sem defects críticos
 
 ## Environment Gates
 
-- `local`: fast developer feedback
-- `ci`: required for PR and merge eligibility
-- `nightly`: required for cloud device matrix validation
-- `release`: required for deployment promotion
+- local: feedback rápido para desenvolvimento
+- ci: obrigatório para elegibilidade de PR e merge
+- nightly: obrigatório para validação de matriz em device farm
+- release: obrigatório para promoção de deploy
 
-## Observability and Reporting
+## Observabilidade e relatórios
 
-The project includes structured reporting for pipeline evidence, JUnit test outputs, screenshots, and execution metadata. This supports a real engineering quality story rather than a static tutorial-only repo.
+O projeto inclui relatórios estruturados para evidência de pipeline, saídas JUnit, screenshots e metadados de execução. Isso sustenta uma história real de qualidade de engenharia em vez de um repositório estático de tutorial.
 
-## How to Run
+## Como executar
 
 ```powershell
 npm install
@@ -119,9 +119,9 @@ npm run test:smoke
 node scripts/generate-report.js
 ```
 
-For Android, configure Android Studio, set ANDROID_HOME, and ensure adb is available. For iOS and cloud validation, use macOS or a real device farm because direct local iOS execution is not realistic on Windows.
+Para Android, configure o Android Studio, defina ANDROID_HOME e garanta que adb esteja disponível. Para iOS e validação em nuvem, utilize macOS ou um device farm real, porque execução local direta de iOS não é realista em Windows.
 
-## Project Structure
+## Estrutura do projeto
 
 ```text
 appium/
@@ -139,29 +139,29 @@ README.md
 PROJECT_STATUS.md
 ```
 
-## Verified Status
+## Status verificado
 
-The repository has been validated in the current environment with the following checks:
+O repositório foi validado no ambiente atual com os seguintes checks:
 
-- ESLint passed
-- TypeScript strict validation passed
-- API contract tests passed
-- Mobile smoke/regression checks passed
-- Release gate evaluation passed for local, CI, nightly, and release thresholds
+- ESLint concluído com sucesso
+- validação estrita de TypeScript concluída
+- testes de contrato de API aprovados
+- checks de smoke/regressão mobile aprovados
+- avaliação de release gate concluída para thresholds de local, CI, nightly e release
 
-## Portfolio Positioning
+## Posicionamento de portfolio
 
-This repository is suitable for demonstrating:
+Este repositório é adequado para demonstrar:
 
-- mobile quality engineering design and architecture
-- test automation strategy and risk prioritization
-- CI/CD evidence and release gates
-- device farm planning and multi-environment execution
-- practical SDET / Quality Engineer portfolio depth
+- arquitetura e desenho de quality engineering mobile
+- estratégia de automação e priorização por risco
+- evidência de CI/CD e release gates
+- planejamento de device farm e execução multi-ambiente
+- profundidade prática para portfolio de SDET / Quality Engineer
 
-## Lessons Learned
+## Lições aprendidas
 
-- Deterministic selectors and explicit waits improve mobile reliability.
-- Risk-based prioritization creates better release confidence than broad but shallow coverage.
-- Evidence-based quality gates are more valuable than ad hoc manual approval.
-- CI and cloud execution must be designed around real device variability and artifact retention.
+- seletores determinísticos e waits explícitos melhoram a confiabilidade mobile
+- priorização baseada em risco gera mais confiança de release do que cobertura ampla e superficial
+- quality gates baseados em evidência são mais valiosos do que aprovação manual ad hoc
+- CI e execução em nuvem precisam ser desenhados para variabilidade real de dispositivos e retenção de artefatos.
