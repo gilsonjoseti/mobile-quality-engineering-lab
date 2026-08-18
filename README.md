@@ -1,5 +1,10 @@
 # Laboratório de Quality Engineering Mobile
 
+![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF)
+![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Release%20Ready-2EA043)
+![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-6F42C1)
+![Automation](https://img.shields.io/badge/Automation-Appium%20%7C%20API%20%7C%20BDD-FF8C42)
+
 Implementação de referência em nível sênior para quality engineering mobile, criada para demonstrar como uma equipe de QA/SDET pode estruturar automação, validação orientada a risco, evidências de CI e confiança de release para jornadas móveis críticas.
 
 > Este repositório é um projeto de portfolio focado em trabalho prático de qualidade de engenharia: arquitetura de testes, desenho de pipeline, observabilidade, release gates e estratégia de automação para Android e iOS.
@@ -106,6 +111,32 @@ O projeto organiza os testes em torno de risco de negócio e confiança de relea
 ## Observabilidade e relatórios
 
 O projeto inclui relatórios estruturados para evidência de pipeline, saídas JUnit, screenshots e metadados de execução. Isso sustenta uma história real de qualidade de engenharia em vez de um repositório estático de tutorial.
+
+## Case study de negócio
+
+Este projeto representa um cenário realista de entrega de software mobile em um contexto de alta criticidade: jornadas de autenticação, pagamentos, confirmação de transações e validação de risco operacional. Em ambientes reais, falhas nesses fluxos impactam diretamente confiança do usuário, conversão, reputação do produto e continuidade do negócio.
+
+A proposta do repositório é demonstrar como a qualidade deixa de ser uma etapa final e passa a ser uma disciplina operacional de engenharia, com foco em:
+
+- detectar riscos antes da liberação
+- automatizar os fluxos mais críticos
+- provar evidência de execução antes do release
+- reduzir retrabalho e falhas em produção
+- garantir consistência entre desenvolvimento, validação e promoção de versões
+
+## Roadmap de maturidade profissional
+
+### Fase 1 — alta prioridade
+- executar um app real em fluxo end-to-end em ambiente controlado
+- publicar relatórios visuais mais profissionais e artefatos de evidência
+- adicionar GitHub Actions com badges reais de status e qualidade
+- documentar um case study de negócio no README com impacto e contexto de decisão
+
+### Fase 2 — média prioridade
+- registrar ADRs para decisões arquiteturais importantes
+- monitorar flaky tests e evidenciar taxa de instabilidade
+- definir thresholds de cobertura por suíte e fluxo crítico
+- manter histórico de execução e evidência por release
 
 ## Como executar
 

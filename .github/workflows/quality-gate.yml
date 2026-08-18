@@ -1,0 +1,77 @@
+name: Quality Gate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: ci
+      PLATFORM: android
+      APP_ENV: qa
+      APP_PATH: ${{ vars.APP_PATH || './apps/demo-finance.apk' }}
+      APP_PACKAGE: ${{ vars.APP_PACKAGE || 'com.example.financeapp' }}
+      APP_ACTIVITY: ${{ vars.APP_ACTIVITY || '.MainActivity' }}
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Verify real app artifact exists
+        shell: bash
+        run: |
+          if [ -f "$APP_PATH" ]; then
+            echo "Real app artifact detected: $APP_PATH"
+          else
+            echo "No real app artifact was found at $APP_PATH. This workflow expects a real APK/AAB from a signed test build."
+            echo "Set APP_PATH as a repository variable or upload the binary as a workflow artifact before execution."
+          fi
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: API tests
+        run: npm run test:api
+
+      - name: Mobile smoke tests
+        run: npm run test:smoke
+
+      - name: Coverage
+        run: npm run test:coverage -- --run
+
+      - name: Generate report
+        run: node scripts/generate-report.js
+
+      - name: Upload quality artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-evidence
+          path: reports/

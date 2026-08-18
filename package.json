@@ -9,6 +9,8 @@
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile=reports/artifacts/coverage-results.xml",
     "test:smoke": "vitest run appium/tests/**/*.spec.ts",
     "test:regression": "vitest run appium/tests/**/*.spec.ts --reporter=default",
     "test:mobile": "vitest run appium/tests/**/*.spec.ts",
@@ -16,7 +18,8 @@
     "test:ios": "node -e \"console.log('iOS execution requires macOS and XCUITest. This project supports the architecture and configuration, not local simulation on Windows.')\"",
     "test:api": "vitest run api/tests/**/*.spec.ts",
     "report": "node scripts/generate-report.js",
-    "setup:check": "node scripts/setup-check.js"
+    "setup:check": "node scripts/setup-check.js",
+    "ci:quality": "npm run lint && npm run typecheck && npm run test:api && npm run test:smoke && npm run test:coverage"
   },
   "keywords": [
     "quality-engineering",
@@ -33,6 +36,7 @@
     "@types/node": "^22.10.2",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
+    "@vitest/coverage-v8": "^2.1.9",
     "dotenv": "^16.4.7",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^10.0.0",
