@@ -66,6 +66,49 @@ This repository has been validated in the current environment with:
 - Quality report generation passed
 - Release gate checks passed for CI and release thresholds
 
+## Real Android execution flow on Windows
+
+The end-to-end Android run requires a complete Android SDK and a generated APK. The valid operational sequence is:
+
+```powershell
+Set-Location "D:\App Mobile"
+
+$env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-17"
+$env:Path += ";$env:ANDROID_HOME\platform-tools;$env:ANDROID_HOME\emulator;$env:ANDROID_HOME\cmdline-tools\latest\bin"
+
+& "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64" "emulator"
+
+& "$env:ANDROID_HOME\emulator\emulator.exe" -create-avd -n Pixel_8 -k "system-images;android-34;google_apis;x86_64" -d pixel_8
+
+Set-Location "D:\App Mobile\android-demo-app"
+.\gradlew.bat assembleDebug
+
+Set-Location "D:\App Mobile"
+New-Item -ItemType Directory -Force -Path "apps" | Out-Null
+Copy-Item ".\android-demo-app\app\build\outputs\apk\debug\app-debug.apk" ".\apps\demo-finance.apk" -Force
+```
+
+Then run emulator, Appium and the project workflow:
+
+```powershell
+Set-Location "D:\App Mobile"
+& "$env:ANDROID_HOME\emulator\emulator.exe" -avd Pixel_8
+```
+
+```powershell
+Set-Location "D:\App Mobile"
+npm run appium:start
+```
+
+```powershell
+Set-Location "D:\App Mobile"
+node scripts/require-appium.js
+npm run run:real -- -AppPath "./apps/demo-finance.apk" -DeviceName "Pixel_8"
+```
+
+This repository is intentionally documented to reflect the real infrastructure requirements for Android automation, rather than pretending the mobile run works without a proper SDK, emulator, Appium service, and APK artifact.
+
 ## Professional maturity pillars
 
 This project is intentionally structured around four core pillars that define a serious Quality Engineering operating model:

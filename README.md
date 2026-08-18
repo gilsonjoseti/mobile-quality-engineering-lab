@@ -140,37 +140,79 @@ A proposta do repositório é demonstrar como a qualidade deixa de ser uma etapa
 
 ## Como executar
 
+### Validação local e estática
+
 ```powershell
 npm install
 npm run setup:check
 npm run lint
 npm run typecheck
 npm run test:api
-npm run test:smoke
 node scripts/generate-report.js
 ```
 
-### Execução real de qualidade mobile
+### Execução real de qualidade mobile no Windows
 
-Para um run real com aplicativo de teste e evidência documental/visual de nível profissional:
+A execução real do fluxo Android exige o SDK Android completo, o emulador configurado e o APK gerado localmente. A sequência correta no ambiente validado é:
 
 ```powershell
-# 1) configure o app real e a plataforma
-$env:PLATFORM = 'android'
-$env:APP_PATH = './apps/demo-finance.apk'
-$env:APP_PACKAGE = 'com.example.financeapp'
-$env:APP_ACTIVITY = '.MainActivity'
+Set-Location "D:\App Mobile"
 
-# 2) inicie o emulador/dispositivo e o Appium
-# appium --port 4723
+$env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-17"
+$env:Path += ";$env:ANDROID_HOME\platform-tools;$env:ANDROID_HOME\emulator;$env:ANDROID_HOME\cmdline-tools\latest\bin"
 
-# 3) execute a jornada real com relatório profissional
-npm run quality:real
+& "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64" "emulator"
+
+& "$env:ANDROID_HOME\emulator\emulator.exe" -create-avd -n Pixel_8 -k "system-images;android-34;google_apis;x86_64" -d pixel_8
+
+Set-Location "D:\App Mobile\android-demo-app"
+.\gradlew.bat assembleDebug
+
+Set-Location "D:\App Mobile"
+New-Item -ItemType Directory -Force -Path "apps" | Out-Null
+Copy-Item ".\android-demo-app\app\build\outputs\apk\debug\app-debug.apk" ".\apps\demo-finance.apk" -Force
 ```
 
-O runner valida se existe um artefato real, se o ambiente Appium está pronto e gera os artefatos em reports/ para evidência de qualidade. Em ambiente sem app real ou sem dispositivo configurado, o processo sai de forma explícita, mostrando exatamente o que falta para a execução profissional.
+Em outro terminal:
 
-Para Android, configure o Android Studio, defina ANDROID_HOME e garanta que adb esteja disponível. Para iOS e validação em nuvem, utilize macOS ou um device farm real, porque execução local direta de iOS não é realista em Windows.
+```powershell
+Set-Location "D:\App Mobile"
+& "$env:ANDROID_HOME\emulator\emulator.exe" -avd Pixel_8
+```
+
+Em um terceiro terminal:
+
+```powershell
+Set-Location "D:\App Mobile"
+npm run appium:start
+```
+
+Confirmação do Appium:
+
+```powershell
+Set-Location "D:\App Mobile"
+node scripts/require-appium.js
+```
+
+Execução do run real:
+
+```powershell
+Set-Location "D:\App Mobile"
+npm run run:real -- -AppPath "./apps/demo-finance.apk" -DeviceName "Pixel_8"
+```
+
+Esse comando automatiza a sequência: valida o APK, valida o AVD, inicia o emulador, aguarda o device ficar pronto, inicia o Appium, executa a suíte de qualidade e produz os artefatos finais em reports/.
+
+Importante: no ambiente validado, o bloqueio real foi causado por ausência do APK e de infraestrutura Android completa para build, não por falha no código da automação. Para iOS, o modelo correto continua sendo macOS ou device farm real; execução local direta de iOS não é realista em Windows.
+
+## Observações de infraestrutura
+
+- Android SDK completo e command-line tools necessários
+- JDK 17 recomendado para build do app demo
+- AVD Android 14 com Google APIs e x86_64 recomendado
+- Appium em execução local na porta 4723
+- APK final gerado em `./apps/demo-finance.apk` antes do run real
 
 ## Estrutura do projeto
 
