@@ -1,0 +1,10 @@
+{
+  "project": "mobile-quality-engineering-lab",
+  "build": "quality-engineering-lab",
+  "name": "android-smoke",
+  "device": "Samsung Galaxy S21",
+  "os_version": "11.0",
+  "app": "bs://<app-id>",
+  "browserstack.user": "${BROWSERSTACK_USERNAME}",
+  "browserstack.key": "${BROWSERSTACK_ACCESS_KEY}"
+}

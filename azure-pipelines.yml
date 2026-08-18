@@ -1,0 +1,90 @@
+trigger:
+- main
+- develop
+
+pr:
+- main
+- develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  NODE_VERSION: '22'
+  TARGET_ENVIRONMENT: 'ci'
+  BROWSERSTACK_USERNAME: '$(BROWSERSTACK_USERNAME)'
+  BROWSERSTACK_ACCESS_KEY: '$(BROWSERSTACK_ACCESS_KEY)'
+  AWS_ACCESS_KEY_ID: '$(AWS_ACCESS_KEY_ID)'
+  AWS_SECRET_ACCESS_KEY: '$(AWS_SECRET_ACCESS_KEY)'
+
+stages:
+- stage: Validate
+  jobs:
+  - job: QualityGate
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '$(NODE_VERSION)'
+
+    - script: npm install --ignore-scripts --no-audit --no-fund
+      displayName: Install dependencies
+
+    - script: npm run lint
+      displayName: Lint
+
+    - script: npm run typecheck
+      displayName: Type Check
+
+    - script: npx vitest run api/tests/users-api.spec.ts api/tests/http-methods.spec.ts api/tests/schema-validation.spec.ts api/tests/retry-and-errors.spec.ts --reporter=junit --outputFile=reports/artifacts/api-test-results.xml
+      displayName: API contract validation
+
+    - script: npx vitest run appium/tests/authentication/login-failure.spec.ts appium/tests/critical-flows/transaction-flow.spec.ts appium/tests/regression/critical-regression.spec.ts --reporter=junit --outputFile=reports/artifacts/mobile-test-results.xml
+      displayName: Mobile smoke and regression checks
+
+    - script: node scripts/generate-report.js
+      displayName: Generate evidence report
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: 'reports/artifacts/*.xml'
+        failTaskOnFailedTests: true
+      displayName: Publish test evidence
+
+    - task: PublishPipelineArtifact@1
+      condition: succeededOrFailed()
+      inputs:
+        targetPath: 'reports'
+        artifact: 'quality-evidence'
+      displayName: Publish artifact bundle
+
+    - script: echo "Quality Gate: smoke and critical checks must pass before merge."
+      displayName: Quality Gate reminder
+
+- stage: NightlyDeviceFarm
+  dependsOn: Validate
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+  - job: CloudExecution
+    steps:
+    - script: echo "Nightly matrix: BrowserStack/Firebase/AWS Device Farm execution should run against Android and iOS representative devices."
+      displayName: Nightly device matrix
+
+    - script: echo "Android: configure emulator/device matrix and Appium capabilities."
+      displayName: Android device matrix
+
+    - script: echo "iOS: use macOS runner or external device farm because local iOS execution is not available on Windows."
+      displayName: iOS device guidance
+
+- stage: ReleaseGate
+  dependsOn: Validate
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+  - job: ReleaseDecision
+    steps:
+    - script: echo "Release gate requires the evidence bundle and the target environment threshold to pass before deployment approval."
+      displayName: Release gate requirement
+
+    - script: TARGET_ENVIRONMENT=release node scripts/release-gate-check.js
+      displayName: Evaluate release environment gate

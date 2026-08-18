@@ -1,0 +1,49 @@
+{
+  "name": "mobile-quality-engineering-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reference implementation for mobile quality engineering, Appium, API testing, CI/CD and risk-based testing.",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --ext .ts,.js --max-warnings 0",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:smoke": "vitest run appium/tests/**/*.spec.ts",
+    "test:regression": "vitest run appium/tests/**/*.spec.ts --reporter=default",
+    "test:mobile": "vitest run appium/tests/**/*.spec.ts",
+    "test:android": "node -e \"console.log('Android execution requires an emulator or device. Use PLATFORM=android and configure Appium capabilities.')\"",
+    "test:ios": "node -e \"console.log('iOS execution requires macOS and XCUITest. This project supports the architecture and configuration, not local simulation on Windows.')\"",
+    "test:api": "vitest run api/tests/**/*.spec.ts",
+    "report": "node scripts/generate-report.js",
+    "setup:check": "node scripts/setup-check.js"
+  },
+  "keywords": [
+    "quality-engineering",
+    "mobile-testing",
+    "appium",
+    "api-testing",
+    "portfolio"
+  ],
+  "author": "Mobile Quality Engineering Lab",
+  "license": "MIT",
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.3.0",
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^10.0.0",
+    "prettier": "^3.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.67.0",
+    "vitest": "^2.1.8",
+    "webdriverio": "^9.6.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.9"
+  }
+}

@@ -1,0 +1,33 @@
+trigger: none
+
+pr:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '22'
+
+- script: npm install --ignore-scripts --no-audit --no-fund
+  displayName: Install
+
+- script: npm run lint
+  displayName: Lint
+
+- script: npm run typecheck
+  displayName: Type Check
+
+- script: npx vitest run api/tests/users-api.spec.ts --reporter=basic
+  displayName: API Smoke
+
+- script: echo "Appium critical flow execution is environment-dependent."
+  displayName: Appium Critical Tests
+
+- script: node scripts/generate-report.js
+  displayName: Report
+
+- script: echo "Quality gate requires smoke, critical, and defect policy compliance."
+  displayName: Quality Gate

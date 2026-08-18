@@ -1,0 +1,10 @@
+{
+  "projectName": "mobile-quality-engineering-lab",
+  "devicePoolArn": "arn:aws:devicefarm:region:account:device-pool/POOL_ID",
+  "appArn": "arn:aws:devicefarm:region:account:upload/APP_ID",
+  "testType": "APPIUM_PYTHON",
+  "environmentVariables": {
+    "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID}",
+    "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY}"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "project": "mobile-quality-engineering-lab",
+  "app": "gs://bucket/demo-finance.apk",
+  "test": {
+    "type": "android",
+    "device": "model:Pixel_6,version:33"
+  }
+}

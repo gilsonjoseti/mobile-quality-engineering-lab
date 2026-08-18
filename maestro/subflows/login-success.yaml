@@ -1,0 +1,8 @@
+appId: "com.example.financeapp"
+---
+- tapOn: "usernameInput"
+- inputText: "demo-user"
+- tapOn: "passwordInput"
+- inputText: "Password123!"
+- tapOn: "loginButton"
+- assertVisible: "homeScreen"

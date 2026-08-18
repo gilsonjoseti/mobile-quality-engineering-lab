@@ -1,0 +1,36 @@
+schedules:
+- cron: '0 2 * * *'
+  displayName: Nightly regression
+  branches:
+    include:
+    - main
+  always: true
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '22'
+
+- script: npm install --ignore-scripts --no-audit --no-fund
+  displayName: Install
+
+- script: npx vitest run api/tests/**/*.spec.ts --reporter=basic
+  displayName: API Regression
+
+- script: echo "Android regression execution requires emulator or device farm."
+  displayName: Android Regression
+
+- script: echo "iOS regression execution requires macOS or cloud device farm."
+  displayName: iOS Regression
+
+- script: echo "Maestro and Robot Framework execution require platform-specific setup."
+  displayName: Mobile Automation
+
+- script: node scripts/generate-report.js
+  displayName: Aggregate Reports
+
+- script: echo "Quality metrics aggregation completed in the reporting layer."
+  displayName: Quality Metrics

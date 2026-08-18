@@ -1,0 +1,9 @@
+appId: "com.example.financeapp"
+---
+- launchApp
+- runFlow: "../subflows/login-success.yaml"
+- tapOn: "transferButton"
+- inputText: "150.00"
+- tapOn: "reviewTransfer"
+- tapOn: "confirmTransfer"
+- assertVisible: "operationSuccess"
